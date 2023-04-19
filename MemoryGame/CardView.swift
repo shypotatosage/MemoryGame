@@ -12,12 +12,14 @@ struct CardView: View {
     let width: CGFloat
     
     var memoriesCount: Int
-    @Binding var showingAlertWon: Bool
+    @Binding var chances: Int
+    @Binding var turns: Int
+    @Binding var showingAlert: Bool
     @Binding var matched: [Object]
     @Binding var currentFlip: [Object]
     
     var body: some View {
-        if card.flipped || matched.contains(where: {$0.id == card.id}) {
+        if currentFlip.contains(where: {$0.id == card.id}) || matched.contains(where: {$0.id == card.id}) {
             Text(card.icon)
                 .font(.system(size: 40))
                 .padding()
@@ -54,6 +56,8 @@ struct CardView: View {
                     }
                     
                     if currentFlip.count == 2 {
+                        turns += 1
+                        
                         if !isMatched(object1: currentFlip[0], object2: currentFlip[1]) {
                             
                             withAnimation(Animation.linear.delay(1)) {
@@ -66,8 +70,9 @@ struct CardView: View {
                         }
                     }
                     
-                    if (matched.count == memoriesCount) {
-                        showingAlertWon.toggle()
+                    if (matched.count == memoriesCount || turns == chances) {
+                        showingAlert.toggle()
+                        matched.removeAll()
                     }
                 }
         }

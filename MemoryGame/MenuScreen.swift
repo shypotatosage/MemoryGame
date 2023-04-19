@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MenuScreen: View {
+    
     var body: some View {
         GeometryReader { g in
             NavigationStack {
@@ -20,7 +21,7 @@ struct MenuScreen: View {
                         .padding()
                         .font(.system(size: 30, weight: Font.Weight.medium))
                     NavigationLink {
-                        ContentView(level: 1, memories: cardList(0))
+                        ContentView(level: 1, chances: 20, memories: getShuffledCard(0))
                     } label: {
                         Text("Easy ")
                             .font(.system(size: 25))
@@ -33,7 +34,7 @@ struct MenuScreen: View {
                             }
                     }
                     NavigationLink {
-                        ContentView(level: 2, memories: cardList(1))
+                        ContentView(level: 2, chances: 20, memories: getShuffledCard(1))
                     } label: {
                         Text("Medium")
                             .font(.system(size: 25))
@@ -47,7 +48,7 @@ struct MenuScreen: View {
                     }
                     .padding()
                     NavigationLink {
-                        ContentView(level: 3, memories: cardList(2))
+                        ContentView(level: 3, chances: 30, memories: getShuffledCard(2))
                     } label: {
                         Text("Hard")
                             .font(.system(size: 25))
@@ -63,6 +64,12 @@ struct MenuScreen: View {
                 .ignoresSafeArea()
             }
         }
+    }
+    
+    func getShuffledCard(_ difficulty: Int) -> [Object] {
+        let list = cardList(difficulty)
+        
+        return list
     }
 }
 

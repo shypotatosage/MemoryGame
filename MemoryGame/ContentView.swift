@@ -11,7 +11,9 @@ struct ContentView: View {
     var fourColumnGrid = [GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())]
     
     var level: Int
-    @State private var showingAlertWon = false
+    @State private var showingAlert = false
+    @State var turns: Int = 0
+    @State var chances: Int
     @State var memories: [Object]
     @State var matched: [Object] = []
     @State var currentFlip: [Object] = []
@@ -25,10 +27,13 @@ struct ContentView: View {
                     .fontWeight(Font.Weight.bold)
                     .font(.system(size: 30))
                 Text("Level \(level)")
+                Text("Turns \(turns) Out Of \(chances) Chances")
+                    .padding()
+                    .font(.system(size: 18, weight: Font.Weight.medium))
                 
                 LazyVGrid(columns: fourColumnGrid, spacing: 10) {
                     ForEach(memories) { memory in
-                        CardView(card: memory, width: g.size.width/4 - 10, memoriesCount: memories.count, showingAlertWon: $showingAlertWon, matched: $matched, currentFlip: $currentFlip)
+                        CardView(card: memory, width: g.size.width/4 - 10, memoriesCount: memories.count, chances: $chances, turns: $turns, showingAlert: $showingAlert, matched: $matched, currentFlip: $currentFlip)
                     }
                 }
                 .padding([.top], 20)
@@ -36,10 +41,18 @@ struct ContentView: View {
             .padding([.top], 10)
         }
         .padding()
-        .alert("Congrats! You won!", isPresented: $showingAlertWon) {
+        .alert( wonOrLost(), isPresented: $showingAlert) {
             Button("Back To Menu") {
                 presentationMode.wrappedValue.dismiss()
             }
+        }
+    }
+    
+    func wonOrLost() -> String {
+        if turns <= chances {
+            return "Congrats! You won!"
+        } else {
+            return "Too bad! You lost."
         }
     }
 }

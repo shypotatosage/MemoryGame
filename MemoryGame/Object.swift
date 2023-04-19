@@ -32,7 +32,5 @@ func cardList(_ difficulty: Int) -> [Object] {
         list.append(Object(icon: memory))
     }
     
-    list.shuffle()
-    
-    return list
+    return list.shuffled()
 }
